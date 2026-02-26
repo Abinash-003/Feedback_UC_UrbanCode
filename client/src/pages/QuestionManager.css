@@ -1,0 +1,542 @@
+/* QuestionManager.css */
+
+.question-manager-container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.sections-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 1rem;
+}
+
+.section-group {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.section-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid #f8fafc;
+}
+
+.section-group-header h2 {
+    font-size: 1.5rem;
+    color: #0f172a;
+    font-weight: 800;
+    position: relative;
+    padding-left: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+.section-group-header h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 1.5rem;
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+.add-in-section {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #ecfdf5;
+    color: #065f46;
+    padding: 0.6rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid #d1fae5;
+}
+
+.add-in-section:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(23, 148, 77, 0.2);
+}
+
+.questions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    gap: 2rem;
+}
+
+.question-item-card {
+    background: #f8fafc;
+    padding: 1.75rem;
+    border-radius: 20px;
+    border: 1px solid #eef2f6;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.question-item-card:hover {
+    background: white;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    transform: translateY(-8px);
+    border-color: #cbd5e1;
+}
+
+.q-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+}
+
+.badges {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.type-badge-alt {
+    padding: 0.35rem 0.75rem;
+    background: #eff6ff;
+    color: #1e40af;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid #dbeafe;
+}
+
+.req-badge {
+    padding: 0.35rem 0.75rem;
+    background: #fff1f2;
+    color: #9f1239;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid #ffe4e6;
+}
+
+.clickable {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.clickable:hover {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+}
+
+.q-card-text {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.q-card-text:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+/* Preview Area Styles */
+.q-preview-area {
+    background: white;
+    border: 1px solid #f1f5f9;
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-bottom: 1.75rem;
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+.preview-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #f1f5f9;
+    border-radius: 10px;
+    background: #f8fafc;
+    font-size: 0.9rem;
+}
+
+.preview-input.textarea {
+    height: 80px;
+    resize: none;
+}
+
+.preview-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.preview-opt {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.radio-circle {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+}
+
+.check-box {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #cbd5e1;
+    border-radius: 6px;
+}
+
+.mini-matrix-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+}
+
+.mini-matrix {
+    width: 100%;
+    font-size: 0.8rem;
+    border-collapse: collapse;
+}
+
+.mini-matrix th,
+.mini-matrix td {
+    padding: 0.6rem;
+    text-align: center;
+    border: 1px solid #f1f5f9;
+}
+
+.mini-matrix th {
+    background: #f8fafc;
+    color: #64748b;
+    font-weight: 700;
+}
+
+.q-card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.25rem;
+    border-top: 2px solid #f8fafc;
+    margin-top: auto;
+}
+
+.stats-info {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.btns {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-icon-alt {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #f8fafc;
+    border: 1px solid #eef2f6;
+    color: #64748b;
+}
+
+.btn-icon-alt:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.btn-icon-alt.edit:hover {
+    background: #eff6ff;
+    color: #2563eb;
+    border-color: #dbeafe;
+}
+
+.btn-icon-alt.delete:hover {
+    background: #fff1f2;
+    color: #e11d48;
+    border-color: #ffe4e6;
+}
+
+.order-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.order-controls button {
+    background: transparent;
+    color: #94a3b8;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.order-controls button:hover:not(:disabled) {
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+.order-controls button:disabled {
+    opacity: 0.2;
+}
+
+.order-badge {
+    background: #f1f5f9;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #475569;
+    margin-right: 0.75rem;
+}
+
+/* Modal Styles handled globally in index.css */
+/* keeping only specific question builder styles here */
+
+.modal-body-alt {
+    padding: 2rem 2.5rem;
+    /* Slightly tighter top/bottom padding */
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.full-col {
+    grid-column: span 2;
+}
+
+/* Switch style handled globally */
+
+.builder-area {
+    background: #f8fafc;
+    padding: 2rem;
+    border-radius: 20px;
+    border: 2px dashed #e2e8f0;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.builder-header {
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dynamic-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.btn-remove-row {
+    color: #e11d48;
+    width: 42px;
+    height: 42px;
+    background: white;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-remove-row:hover {
+    background: #fff1f2;
+    border-color: #ffe4e6;
+}
+
+.btn-add-item {
+    color: var(--primary);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+    background: transparent;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+
+.btn-add-item:hover {
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Button styles handled globally */
+
+.matrix-builder-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 1024px) {
+    .questions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-group {
+        padding: 1.25rem;
+    }
+
+    .section-group-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .form-grid,
+    .matrix-builder-container {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem !important;
+    }
+
+    .full-col {
+        grid-column: span 1 !important;
+    }
+
+    .modal-overlay {
+        padding: 0;
+    }
+
+    .modal-content.admin-modal {
+        width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        margin: 0;
+    }
+
+    .modal-header {
+        padding: 1rem 1.25rem;
+    }
+
+    .modal-body-alt {
+        padding: 1.25rem;
+    }
+
+    .modal-footer-alt {
+        flex-direction: column-reverse;
+        padding: 1rem 1.25rem;
+        gap: 0.75rem;
+    }
+
+    .modal-footer-alt button {
+        width: 100%;
+        margin: 0;
+        padding: 0.85rem;
+    }
+
+    .dynamic-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #f1f5f9;
+        margin-bottom: 1rem;
+    }
+
+    .btn-remove-row {
+        align-self: flex-end;
+    }
+
+    .modal-content.admin-modal {
+        max-height: 100vh;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .modal-body-alt {
+        padding: 1.5rem;
+    }
+}
+
+/* Vertical scaling for shorter screens */
+@media (max-height: 800px) {
+    .modal-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .modal-body-alt {
+        padding: 1.5rem;
+    }
+
+    .modal-footer-alt {
+        padding: 1rem 1.5rem;
+    }
+
+    .form-grid {
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group-alt {
+        gap: 0.5rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.15rem;
+    }
+}

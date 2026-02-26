@@ -1,0 +1,409 @@
+:root {
+    --google-bg: #f0ebf8;
+    --google-card-bg: #ffffff;
+    --google-primary: #17944d;
+    /* UC Green instead of Google Purple */
+    --google-text: #202124;
+    --google-text-secondary: #70757a;
+    --google-border: #dadce0;
+    --google-danger: #d93025;
+    --radius-google: 8px;
+}
+
+body {
+    background-color: var(--google-bg);
+    color: var(--google-text);
+    margin: 0;
+    padding: 0;
+}
+
+.feedback-container {
+    max-width: 770px;
+    margin: 1rem auto 4rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.card-style {
+    background: var(--google-card-bg);
+    border-radius: var(--radius-google);
+    border: 1px solid var(--google-border);
+    padding: 1.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-card {
+    border-top: 10px solid var(--google-primary);
+    padding-top: 1rem;
+    /* Adjust since stripe is now border-top */
+}
+
+.header-card h1 {
+    font-size: 2.1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    color: var(--google-text);
+}
+
+.header-card p {
+    font-size: 0.95rem;
+    color: var(--google-text);
+    line-height: 1.5;
+}
+
+.header-stripe {
+    display: none;
+    /* Replaced by border-top on header-card */
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--google-text);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--google-border);
+}
+
+.question-card {
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--google-text);
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.required {
+    color: var(--google-danger);
+    margin-left: 2px;
+}
+
+/* Inputs */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea,
+.dynamic-select,
+.t-input-group select {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--google-border);
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    background: transparent;
+    transition: all 0.3s;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.dynamic-select:focus,
+.t-input-group select:focus {
+    border-bottom: 2px solid var(--google-primary);
+}
+
+/* Radio buttons - Google style (clean list) */
+.radio-group-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.radio-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    background: transparent;
+    border: none;
+    font-size: 0.9rem;
+    color: var(--google-text);
+    cursor: pointer;
+    border-radius: 0;
+}
+
+.radio-pill:hover {
+    background: transparent;
+}
+
+.radio-pill.active {
+    color: var(--google-text);
+    border: none;
+    background: transparent;
+}
+
+.radio-pill::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid #5f6368;
+    border-radius: 50%;
+    display: inline-block;
+    transition: all 0.2s;
+}
+
+.radio-pill.active::before {
+    border-color: var(--google-primary);
+    background: radial-gradient(circle, var(--google-primary) 40%, transparent 40%);
+}
+
+.radio-pill input {
+    display: none;
+}
+
+/* New Google-style Radios */
+.radio-group-horizontal-google {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.radio-pill-google {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--google-text);
+    padding: 0.25rem 0;
+}
+
+.radio-circle-google {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #5f6368;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.radio-pill-google.active .radio-circle-google {
+    border-color: var(--google-primary);
+}
+
+.radio-pill-google.active .radio-circle-google::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: var(--google-primary);
+    border-radius: 50%;
+    animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    to {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Matrix Table - Responsive & Clean */
+.matrix-table-container {
+    width: 100%;
+    margin-top: 1rem;
+    border: 1px solid var(--google-border);
+    border-radius: 4px;
+}
+
+.matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.matrix-table th {
+    background-color: #f8f9fa;
+    padding: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--google-text-secondary);
+    border-bottom: 1px solid var(--google-border);
+}
+
+.matrix-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--google-border);
+}
+
+.criteria-label {
+    font-size: 0.9rem;
+    color: var(--google-text);
+    font-weight: 400;
+}
+
+.radio-cell input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--google-primary);
+}
+
+/* Checkbox */
+.checkbox-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    padding: 0.25rem 0;
+}
+
+.checkbox-item input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--google-primary);
+}
+
+/* Footer & Buttons */
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 0 1rem;
+}
+
+.submit-btn {
+    background-color: var(--google-primary);
+    color: white;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.submit-btn:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    background-color: var(--primary-hover);
+}
+
+.footer-note {
+    font-size: 0.8rem;
+    color: var(--google-text-secondary);
+}
+
+.trainer-block-card {
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border: 1px solid var(--google-border);
+    border-radius: var(--radius-google);
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.trainer-block-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.trainer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.trainer-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+    color: var(--google-text);
+}
+
+.trainer-count {
+    background: var(--google-primary);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.t-remove-btn {
+    background: transparent;
+    color: #d93025;
+    border: 1px solid #fce8e6;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.t-remove-btn:hover {
+    background: #fce8e6;
+}
+
+.add-trainer-btn {
+    width: 100%;
+    padding: 1rem;
+    background: transparent;
+    color: var(--google-primary);
+    border: 2px dashed var(--google-border);
+    border-radius: var(--radius-google);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.add-trainer-btn:hover {
+    border-color: var(--google-primary);
+    background: rgba(23, 148, 77, 0.04);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .feedback-container {
+        margin: 0.5rem auto;
+    }
+
+    .card-style {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .matrix-table {
+        display: block;
+        overflow-x: auto;
+    }
+}
