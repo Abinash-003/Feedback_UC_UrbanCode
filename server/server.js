@@ -12,10 +12,10 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors(
-    {
-        origin: 'https://feedback-uc-urban-code.vercel.app/', // Update this to your frontend URL
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+app.use(cors({
+    origin: 'https://feedback-uc-urban-code.vercel.app', // No trailing slash
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true // Allow cookies/credentials if needed
 }));
 app.use(express.json());
 
