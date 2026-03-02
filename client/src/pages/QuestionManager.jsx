@@ -1,11 +1,6 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 
+import axios from 'axios';
 const API_BASE_URL = 'https://feedback-uc-urbancode.onrender.com';
-import Sidebar from '../components/Sidebar';
-import { MdAdd, MdEdit, MdDelete, MdArrowUpward, MdArrowDownward, MdHelpOutline } from 'react-icons/md';
-import Swal from 'sweetalert2';
-import './QuestionManager.css';
 
 const QuestionManager = () => {
     const [questions, setQuestions] = useState([]);
@@ -27,15 +22,6 @@ const QuestionManager = () => {
         fetchQuestions();
     }, []);
 
-        try {
-            const res = await axios.get('/api/questions');
-            setQuestions(res.data);
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
     const fetchQuestions = async () => {
         try {
             const res = await axios.get(`${API_BASE_URL}/api/questions`);
@@ -52,15 +38,7 @@ const QuestionManager = () => {
         const token = localStorage.getItem('token');
         try {
             const { _id, __v, createdAt, updatedAt, ...questionData } = currentQuestion;
-
             if (isEditing) {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-            } else {
-                await axios.post('/api/questions', questionData, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-            }
                 await axios.put(`${API_BASE_URL}/api/questions/${currentQuestion._id}`, questionData, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -100,8 +78,6 @@ const QuestionManager = () => {
             if (result.isConfirmed) {
                 const token = localStorage.getItem('token');
                 try {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
                     await axios.delete(`${API_BASE_URL}/api/questions/${id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
@@ -128,7 +104,6 @@ const QuestionManager = () => {
         const token = localStorage.getItem('token');
         try {
             await Promise.all([
-                axios.put(`/api/questions/${newQuestions[targetIndex]._id}`, newQuestions[targetIndex], { headers: { Authorization: `Bearer ${token}` } })
                 axios.put(`${API_BASE_URL}/api/questions/${newQuestions[index]._id}`, newQuestions[index], { headers: { Authorization: `Bearer ${token}` } }),
                 axios.put(`${API_BASE_URL}/api/questions/${newQuestions[targetIndex]._id}`, newQuestions[targetIndex], { headers: { Authorization: `Bearer ${token}` } })
             ]);

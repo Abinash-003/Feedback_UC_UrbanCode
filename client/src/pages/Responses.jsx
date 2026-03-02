@@ -1,11 +1,12 @@
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-const API_BASE_URL = 'https://feedback-uc-urbancode.onrender.com';
 import Sidebar from '../components/Sidebar';
 import { MdSearch, MdFilterList, MdVisibility, MdDelete, MdDownload, MdCheckCircle, MdCancel } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import './Responses.css';
+
+const API_BASE_URL = 'https://feedback-uc-urbancode.onrender.com';
 
 const Responses = () => {
     const [responses, setResponses] = useState([]);
@@ -28,19 +29,6 @@ const Responses = () => {
         handleSearchAndFilter();
     }, [searchTerm, filterTrainer, responses]);
 
-        try {
-            const token = localStorage.getItem('token');
-            const res = await axios.get('/api/responses', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setResponses(res.data);
-            setFilteredResponses(res.data);
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
     const fetchResponses = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -56,16 +44,6 @@ const Responses = () => {
         }
     };
 
-        try {
-            const token = localStorage.getItem('token');
-            const res = await axios.get('/api/trainers', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setTrainers(res.data);
-        } catch (err) {
-            console.error("Error fetching trainers:", err);
-        }
-    };
     const fetchTrainers = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -78,16 +56,6 @@ const Responses = () => {
         }
     };
 
-        try {
-            const token = localStorage.getItem('token');
-            const res = await axios.get('/api/questions', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setQuestions(res.data);
-        } catch (err) {
-            console.error("Error fetching questions:", err);
-        }
-    };
     const fetchQuestions = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -134,8 +102,6 @@ const Responses = () => {
         if (result.isConfirmed) {
             try {
                 const token = localStorage.getItem('token');
-                    headers: { Authorization: `Bearer ${token}` }
-                });
                 await axios.delete(`${API_BASE_URL}/api/responses/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
