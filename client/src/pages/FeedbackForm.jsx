@@ -56,7 +56,7 @@ const FeedbackForm = () => {
 
     const fetchActiveTrainers = async () => {
         try {
-            const res = await axios.get('/api/trainers/active');
+            const res = await axios.get('https://feedback-uc-urbancode.onrender.com/api/trainers/active');
             setTrainers(res.data);
         } catch (err) {
             console.error("Error fetching trainers:", err);
@@ -65,7 +65,7 @@ const FeedbackForm = () => {
 
     const fetchQuestions = async () => {
         try {
-            const res = await axios.get('/api/questions');
+            const res = await axios.get('https://feedback-uc-urbancode.onrender.com/api/questions');
             setQuestions(res.data);
         } catch (err) {
             setError('Failed to load form questions. Please try again later.');
@@ -198,7 +198,7 @@ const FeedbackForm = () => {
                     };
                 });
 
-            await axios.post('/api/responses', {
+            await axios.post('https://feedback-uc-urbancode.onrender.com/api/responses', {
                 participantDetails: participantInfo,
                 dynamicAnswers,
                 trainerEvaluations

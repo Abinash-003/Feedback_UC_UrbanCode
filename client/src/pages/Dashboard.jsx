@@ -19,7 +19,7 @@ const Dashboard = () => {
     const fetchAnalytics = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get('/api/responses/analytics', {
+            const res = await axios.get('https://feedback-uc-urbancode.onrender.com/api/responses/analytics', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setStats(res.data);
