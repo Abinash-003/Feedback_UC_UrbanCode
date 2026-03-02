@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import Sidebar from '../components/Sidebar';
+import { MdAdd, MdEdit, MdDelete, MdArrowUpward, MdArrowDownward } from 'react-icons/md';
+import './QuestionManager.css';
+
 const API_BASE_URL = 'https://feedback-uc-urbancode.onrender.com';
 
 const QuestionManager = () => {
