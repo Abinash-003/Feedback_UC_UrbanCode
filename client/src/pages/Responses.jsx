@@ -1,12 +1,11 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../api.config';
 import Sidebar from '../components/Sidebar';
 import { MdSearch, MdFilterList, MdVisibility, MdDelete, MdDownload, MdCheckCircle, MdCancel } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import './Responses.css';
-
-const API_BASE_URL = 'https://feedback-uc-urbancode.onrender.com';
 
 const Responses = () => {
     const [responses, setResponses] = useState([]);

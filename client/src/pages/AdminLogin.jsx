@@ -18,7 +18,7 @@ const AdminLogin = () => {
         setLoading(true);
         setError('');
         try {
-            const res = await axios.post('https://feedback-uc-urbancode.onrender.com/api/auth/login', credentials);
+            const res = await axios.post(`${API_BASE_URL}/api/auth/login`, credentials);
             localStorage.setItem('token', res.data.token);
             navigate('/admin/dashboard');
         } catch (err) {

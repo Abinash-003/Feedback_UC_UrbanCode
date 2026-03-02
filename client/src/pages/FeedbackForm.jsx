@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../api.config';
 import { MdCheckCircle, MdError, MdHourglassEmpty } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import './FeedbackForm.css';
@@ -56,7 +57,7 @@ const FeedbackForm = () => {
 
     const fetchActiveTrainers = async () => {
         try {
-            const res = await axios.get('https://feedback-uc-urbancode.onrender.com/api/trainers/active');
+            const res = await axios.get(`${API_BASE_URL}/api/trainers/active`);
             setTrainers(res.data);
         } catch (err) {
             console.error("Error fetching trainers:", err);
@@ -65,7 +66,7 @@ const FeedbackForm = () => {
 
     const fetchQuestions = async () => {
         try {
-            const res = await axios.get('https://feedback-uc-urbancode.onrender.com/api/questions');
+            const res = await axios.get(`${API_BASE_URL}/api/questions`);
             setQuestions(res.data);
         } catch (err) {
             setError('Failed to load form questions. Please try again later.');
@@ -198,7 +199,7 @@ const FeedbackForm = () => {
                     };
                 });
 
-            await axios.post('https://feedback-uc-urbancode.onrender.com/api/responses', {
+            await axios.post(`${API_BASE_URL}/api/responses`, {
                 participantDetails: participantInfo,
                 dynamicAnswers,
                 trainerEvaluations
