@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../api.config';
+import { MdPerson, MdLock, MdVisibility, MdVisibilityOff, MdOutlineAutoAwesome, MdOutlineAnalytics, MdOutlineInsights, MdOutlineCategory, MdOutlinePsychology } from 'react-icons/md';
 import './AdminLogin.css';
 
 const AdminLogin = () => {
     const [credentials, setCredentials] = useState({ username: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    useEffect(() => {
+        document.title = "UC-feedback form login";
+    }, []);
 
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -31,38 +35,69 @@ const AdminLogin = () => {
 
     return (
         <div className="login-container">
-            <div className="login-card">
+            {/* Moving Background Icons */}
+            <div className="bg-bubbles">
+                <MdOutlineAutoAwesome className="bubble icon-1" />
+                <MdOutlineAnalytics className="bubble icon-2" />
+                <MdOutlineInsights className="bubble icon-3" />
+                <MdOutlineCategory className="bubble icon-4" />
+                <MdOutlinePsychology className="bubble icon-5" />
+            </div>
+
+            <div className="login-card glass">
                 <div className="login-header">
-                    <h1>Admin Portal</h1>
-                    <p>Enter your credentials to access the dashboard</p>
+                    <div className="logo-box">
+                        <span className="logo-text">urbancode<span className="logo-bracket">{'>'}</span></span>
+                        <p className="logo-sub">training and solutions</p>
+                    </div>
+                    <h2 className="zen-title">UC-feedback form login</h2>
                 </div>
+
                 <form onSubmit={handleSubmit} className="login-form">
                     {error && <div className="error-message">{error}</div>}
-                    <div className="input-group">
-                        <label>Username</label>
-                        <input
-                            type="text"
-                            name="username"
-                            value={credentials.username}
-                            onChange={handleChange}
-                            required
-                            placeholder="username"
-                        />
+
+                    <div className="modern-input-group">
+                        <div className="input-with-icon">
+                            <MdPerson className="input-icon" />
+                            <input
+                                type="text"
+                                name="username"
+                                value={credentials.username}
+                                onChange={handleChange}
+                                required
+                                placeholder="Username"
+                            />
+                        </div>
                     </div>
-                    <div className="input-group">
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            value={credentials.password}
-                            onChange={handleChange}
-                            required
-                            placeholder="••••••••"
-                        />
+
+                    <div className="modern-input-group">
+                        <div className="input-with-icon">
+                            <MdLock className="input-icon" />
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={credentials.password}
+                                onChange={handleChange}
+                                required
+                                placeholder="Password"
+                            />
+                            <button
+                                type="button"
+                                className="toggle-pass"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                            </button>
+                        </div>
                     </div>
-                    <button type="submit" className="login-btn" disabled={loading}>
-                        {loading ? 'Logging in...' : 'Login'}
+
+                    <button type="submit" className="zen-login-btn" disabled={loading}>
+                        {loading ? <span className="loader"></span> : 'SIGN IN'}
                     </button>
+
+                    <div className="login-footer">
+                        <p>© 2026 UrbanCode. All rights reserved.</p>
+                    </div>
                 </form>
             </div>
         </div>
