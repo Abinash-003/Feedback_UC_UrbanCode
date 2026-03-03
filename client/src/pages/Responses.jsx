@@ -154,7 +154,7 @@ const Responses = () => {
         });
 
         const allQuestionHeaders = [...currentQuestionTexts, ...Array.from(legacyTexts)];
-        const baseHeaders = ['Date', 'Participant Name', 'Main Trainer', 'Course', 'Batch', 'All Trainer Evaluations'];
+        const baseHeaders = ['Date', 'Main Trainer', 'Course', 'Batch', 'All Trainer Evaluations'];
         const headers = [...baseHeaders, ...allQuestionHeaders];
 
         const csvContent = [
@@ -170,7 +170,6 @@ const Responses = () => {
 
                 const row = [
                     escapeCSV(new Date(r.createdAt).toLocaleDateString()),
-                    escapeCSV(r.participantDetails?.name || 'N/A'),
                     escapeCSV(r.participantDetails?.trainerName || 'N/A'),
                     escapeCSV(r.participantDetails?.courseName || 'N/A'),
                     escapeCSV(r.participantDetails?.batch || 'N/A'),
@@ -307,7 +306,6 @@ const Responses = () => {
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    <th>Participant Name</th>
                                     <th>Trainer</th>
                                     <th>Course</th>
                                     <th>Rating</th>
@@ -332,7 +330,6 @@ const Responses = () => {
                                         return (
                                             <tr key={res._id}>
                                                 <td className="date-cell">{new Date(res.createdAt).toLocaleDateString()}</td>
-                                                <td className="email-cell">{res.participantDetails?.name || 'N/A'}</td>
                                                 <td>
                                                     <div className="trainer-cell-info">
                                                         {res.trainerEvaluations && res.trainerEvaluations.length > 0 ? (
@@ -376,14 +373,13 @@ const Responses = () => {
                     <div className="modal-overlay">
                         <div className="modal-content admin-modal">
                             <div className="modal-header">
-                                <h2>Response: {selectedResponse.participantDetails?.name || 'Anonymous Response'}</h2>
+                                <h2>Anonymous Feedback Detail</h2>
                                 <button onClick={() => setSelectedResponse(null)} className="close-btn">&times;</button>
                             </div>
                             <div className="modal-body-alt">
                                 <section className="response-section">
-                                    <h3>Participant Info</h3>
+                                    <h3>General Info</h3>
                                     <div className="info-grid">
-                                        <div className="info-item"><span>Participant Name</span><span>{selectedResponse.participantDetails?.name || 'N/A'}</span></div>
                                         <div className="info-item"><span>Course</span><span>{selectedResponse.participantDetails?.courseName || 'N/A'}</span></div>
                                         <div className="info-item"><span>Batch</span><span>{selectedResponse.participantDetails?.batch || 'N/A'}</span></div>
                                     </div>

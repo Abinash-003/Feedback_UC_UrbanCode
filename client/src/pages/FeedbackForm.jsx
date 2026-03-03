@@ -63,10 +63,6 @@ const FeedbackForm = () => {
     };
 
     useEffect(() => {
-        const hasSubmitted = localStorage.getItem('urbanCode_feedback_submitted');
-        if (hasSubmitted) {
-            setSubmitted(true);
-        }
         fetchQuestions();
         fetchActiveTrainers();
     }, []);
@@ -144,6 +140,21 @@ const FeedbackForm = () => {
                 icon: 'warning',
                 title: 'Required Field',
                 text: 'Email Address is required to identify your feedback.',
+                confirmButtonColor: '#ff7e5f'
+            }).then(() => {
+                if (emailQ) {
+                    document.getElementById(`q-${emailQ._id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailVal)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Email',
+                text: 'Please enter a valid email address.',
                 confirmButtonColor: '#ff7e5f'
             }).then(() => {
                 if (emailQ) {
@@ -270,8 +281,13 @@ const FeedbackForm = () => {
                 trainerEvaluations
             });
 
-            localStorage.setItem('urbanCode_feedback_submitted', 'true');
-            Swal.fire({ icon: 'success', title: 'Submitted!', text: 'Thank you for your feedback.', timer: 3000, showConfirmButton: false });
+            Swal.fire({
+                icon: 'success',
+                title: 'Submitted!',
+                text: 'Thank you for your feedback.',
+                timer: 3000,
+                showConfirmButton: false
+            });
             setSubmitted(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (err) {
@@ -303,6 +319,18 @@ const FeedbackForm = () => {
                     <MdCheckCircle size={100} color="#10b981" />
                     <h1>Thank You!</h1>
                     <p>Your feedback has been recorded.</p>
+                    <button
+                        className="submit-another-btn"
+                        onClick={() => {
+                            setAnswers({});
+                            setTrainerEvaluations([{ trainerId: '', trainerName: '', trainerType: 'Course Training', ratings: {} }]);
+                            setSubmitted(false);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                    >
+                        Submit another response
+                    </button>
+                    <p className="success-footer-text">Urban Code - Training Feedback</p>
                 </div>
             </div>
         );
@@ -323,7 +351,9 @@ const FeedbackForm = () => {
     const renderQuestion = (q) => {
         const val = answers[q._id];
         switch (q.type) {
-            case 'text': return <input type="text" value={val || ''} onChange={(e) => handleAnswerChange(q._id, e.target.value)} />;
+            case 'text':
+                const isEmail = q.questionText.toLowerCase().includes('email');
+                return <input type={isEmail ? "email" : "text"} value={val || ''} onChange={(e) => handleAnswerChange(q._id, e.target.value)} />;
             case 'textarea': return <textarea value={val || ''} onChange={(e) => handleAnswerChange(q._id, e.target.value)}></textarea>;
             case 'radio':
                 return (
@@ -375,7 +405,7 @@ const FeedbackForm = () => {
         <div className="feedback-container">
             <div className="banner-contact-card">
                 <div className="banner-content">
-                    <h1 className="banner-title">URBAN CODE</h1>
+                    <h1 className="banner-title shine-text">URBAN CODE</h1>
                     <p className="banner-tagline">Your search for upskilling ends here</p>
                     <div className="contact-links-grid">
                         <a href="https://www.urbancode.in/" target="_blank" rel="noopener noreferrer" className="contact-link-item">

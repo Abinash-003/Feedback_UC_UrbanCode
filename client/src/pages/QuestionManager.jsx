@@ -186,11 +186,25 @@ const QuestionManager = () => {
         setShowModal(true);
     };
 
-    const openAdd = (section = 'General', order = null) => {
-        if (order === null) {
-            order = questions.length > 0
-                ? Math.max(...questions.map(q => q.order || 0)) + 1
-                : 0;
+    const openAdd = (section = null, order = null) => {
+        let calculatedOrder = order;
+        let targetSection = section || 'General';
+
+        if (calculatedOrder === null) {
+            if (section) {
+                // Find questions only in this section
+                const sectionQs = questions.filter(q => q.section === section);
+                if (sectionQs.length > 0) {
+                    calculatedOrder = Math.max(...sectionQs.map(q => q.order || 0)) + 1;
+                } else {
+                    calculatedOrder = questions.length > 0 ? Math.max(...questions.map(q => q.order || 0)) + 1 : 0;
+                }
+            } else {
+                // Overall add button - last in whole form
+                calculatedOrder = questions.length > 0
+                    ? Math.max(...questions.map(q => q.order || 0)) + 1
+                    : 0;
+            }
         }
 
         setCurrentQuestion({
@@ -199,8 +213,8 @@ const QuestionManager = () => {
             options: [],
             rows: [],
             columns: [],
-            section,
-            order: order,
+            section: targetSection,
+            order: calculatedOrder,
             required: false,
             isTrainerEval: false,
             isOverallRating: false
@@ -355,13 +369,12 @@ const QuestionManager = () => {
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        {q.rows.slice(0, 3).map(r => (
+                                                                        {q.rows.map(r => (
                                                                             <tr key={r}>
                                                                                 <td>{r}</td>
                                                                                 {q.columns.map(c => <td key={c}><div className="radio-circle"></div></td>)}
                                                                             </tr>
                                                                         ))}
-                                                                        {q.rows.length > 3 && <tr><td colSpan={q.columns.length + 1}>...</td></tr>}
                                                                     </tbody>
                                                                 </table>
                                                             </div>

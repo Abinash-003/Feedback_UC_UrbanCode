@@ -18,12 +18,12 @@ body {
 }
 
 .feedback-container {
-    max-width: 720px;
-    margin: 1rem auto 4rem auto;
-    padding: 0 1rem;
+    max-width: 1100px;
+    margin: 1.5rem auto 5rem auto;
+    padding: 0 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .banner-contact-card {
@@ -41,10 +41,48 @@ body {
 }
 
 .banner-title {
-    font-size: 1.4rem;
-    font-weight: 800;
-    letter-spacing: 0.15em;
-    margin-bottom: 0.25rem;
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+}
+
+.shine-text {
+    /* 3D Lifted Effect */
+    text-shadow:
+        0 1px 0 #ccc,
+        0 2px 0 #c9c9c9,
+        0 3px 0 #bbb,
+        0 4px 0 #b9b9b9,
+        0 5px 0 #aaa,
+        0 6px 1px rgba(0, 0, 0, .1),
+        0 0 5px rgba(0, 0, 0, .1),
+        0 1px 3px rgba(0, 0, 0, .3),
+        0 3px 5px rgba(0, 0, 0, .2),
+        0 5px 10px rgba(0, 0, 0, .25),
+        0 10px 10px rgba(0, 0, 0, .2),
+        0 20px 20px rgba(0, 0, 0, .15);
+
+    /* Shine Effect */
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.8) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    transition: 0.5s;
+    animation: shine 3s infinite linear;
+}
+
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
 }
 
 .banner-tagline {
@@ -162,7 +200,7 @@ body {
     width: 100%;
     border: none;
     border-bottom: 1px solid var(--google-border);
-    padding: 0.5rem 0;
+    padding: 0.2rem 0;
     font-size: 0.95rem;
     background: transparent;
     transition: all 0.3s;
@@ -185,8 +223,8 @@ body {
 }
 
 .radio-pill {
-    display: inline-flex;
-    align-items: center;
+    display: inline-flex !important;
+    align-items: center !important;
     position: relative;
     padding: 0.35rem 0 0.35rem 32px;
     cursor: pointer;
@@ -194,6 +232,7 @@ body {
     color: var(--google-text);
     transition: all 0.2s ease;
     line-height: normal;
+    margin-bottom: 0 !important;
 }
 
 .radio-pill::before {
@@ -275,10 +314,10 @@ body {
 }
 
 .checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    /* Increased gap */
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem;
     font-size: 0.95rem;
     color: var(--google-text);
     cursor: pointer;
@@ -286,6 +325,8 @@ body {
     border-radius: 6px;
     transition: all 0.2s ease;
     user-select: none;
+    margin-bottom: 0 !important;
+    /* Remove margin from global label style */
 }
 
 .checkbox-item:hover {
@@ -439,6 +480,32 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    max-width: 400px;
+    width: 90%;
+}
+
+.submit-another-btn {
+    background-color: transparent;
+    color: var(--google-primary);
+    border: 1px solid var(--google-primary);
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.2s;
+}
+
+.submit-another-btn:hover {
+    background-color: rgba(23, 148, 77, 0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.success-footer-text {
+    font-size: 0.75rem;
+    color: var(--google-text-secondary);
+    margin-top: 2rem;
 }
 
 /* Highlight for missing fields */
