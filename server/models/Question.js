@@ -12,7 +12,9 @@ const questionSchema = new mongoose.Schema({
     columns: [String], // For matrix type
     section: { type: String, required: true },
     order: { type: Number, default: 0 },
-    required: { type: Boolean, default: false }
+    required: { type: Boolean, default: false },
+    isTrainerEval: { type: Boolean, default: false },
+    isOverallRating: { type: Boolean, default: false }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Question', questionSchema);

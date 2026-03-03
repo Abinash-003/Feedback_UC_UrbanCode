@@ -371,7 +371,11 @@ tr:last-child td {
 
     .answer-item {
         padding: 0.5rem 0;
-        gap: 1rem;
+    }
+
+    .answer-item .answer-content {
+        background: transparent !important;
+        padding: 0 !important;
     }
 }
 
@@ -404,4 +408,143 @@ tr:last-child td {
         background: transparent !important;
         padding: 0 !important;
     }
+}
+
+/* Neat Response Report Styles */
+.sections-display {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.response-group-block {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.response-section-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #eef2f6;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.response-section-title::before {
+    content: '';
+    width: 4px;
+    height: 1.25rem;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.answers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.answer-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.answer-item label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.answer-content {
+    background: white;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    border: 1px solid #edf2f7;
+    font-size: 1rem;
+    color: #2d3748;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.matrix-display {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.matrix-row-val {
+    background: #f1f5f9;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.trainer-response-block {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dotted #cbd5e1;
+}
+
+.trainer-response-block:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.trainer-label-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.trainer-type-suffix {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.info-item span:first-child {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #94a3b8;
+    font-weight: 700;
+}
+
+.info-item span:last-child {
+    font-size: 1rem;
+    color: #1e293b;
+    font-weight: 600;
 }

@@ -188,7 +188,7 @@
     content: '';
     width: 4px;
     height: 18px;
-    background: var(--primary);
+    background: #17944d;
     border-radius: 2px;
 }
 

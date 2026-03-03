@@ -69,18 +69,35 @@ const Responses = () => {
 
     const handleSearchAndFilter = () => {
         let temp = [...responses];
+        const term = searchTerm.toLowerCase();
+
         if (searchTerm) {
-            temp = temp.filter(r =>
-                r.participantDetails?.email?.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            temp = temp.filter(r => {
+                const nameInDetails = r.participantDetails?.trainerName?.toLowerCase().includes(term);
+                const nameInEvals = r.trainerEvaluations?.some(t => t.trainerName?.toLowerCase().includes(term));
+                return nameInDetails || nameInEvals;
+            });
         }
+
         if (filterTrainer) {
-            temp = temp.filter(r => r.participantDetails?.trainerName === filterTrainer);
+            temp = temp.filter(r => {
+                const matchInDetails = r.participantDetails?.trainerName === filterTrainer;
+                const matchInEvals = r.trainerEvaluations?.some(t => t.trainerName === filterTrainer);
+                return matchInDetails || matchInEvals;
+            });
         }
         setFilteredResponses(temp);
     };
 
     const getOverallRating = (res) => {
+        // First try to find a question marked as isOverallRating
+        const markedAns = res.dynamicAnswers?.find(a => {
+            const currentQ = questions.find(q => q._id === a.questionId);
+            return currentQ?.isOverallRating;
+        });
+        if (markedAns) return markedAns.value || 'N/A';
+
+        // Fallback to text matching for legacy
         const ans = res.dynamicAnswers?.find(a => {
             const txt = a.questionText?.toLowerCase();
             return txt?.includes('overall') || txt?.includes('experience') || txt?.includes('rating') || a.section?.includes('SECTION 2');
@@ -113,42 +130,67 @@ const Responses = () => {
     };
 
     const downloadCSV = () => {
-        const allQuestions = new Set();
+        // Helper to escape CSV fields
+        const escapeCSV = (val) => {
+            if (val === null || val === undefined) return '""';
+            let str = val.toString();
+            // Replace double quotes with pair of double quotes
+            str = str.replace(/"/g, '""');
+            // Wrap in double quotes
+            return `"${str}"`;
+        };
+
+        // 1. Identify all unique questions and sort them by form order
+        const currentQuestionTexts = [...questions].sort((a, b) => (a.order || 0) - (b.order || 0)).map(q => q.questionText);
+
+        // Find legacy question texts not in current questions
+        const legacyTexts = new Set();
         filteredResponses.forEach(r => {
             r.dynamicAnswers?.forEach(ans => {
-                const txt = ans.questionText;
-                if (txt) allQuestions.add(txt);
+                if (ans.questionText && !currentQuestionTexts.includes(ans.questionText)) {
+                    legacyTexts.add(ans.questionText);
+                }
             });
         });
-        const questionHeaders = Array.from(allQuestions);
-        const headers = ['Date', 'Email', 'Trainer', 'Course', 'Trainer Evaluations (Multi)', ...questionHeaders];
+
+        const allQuestionHeaders = [...currentQuestionTexts, ...Array.from(legacyTexts)];
+        const baseHeaders = ['Date', 'Participant Name', 'Main Trainer', 'Course', 'Batch', 'All Trainer Evaluations'];
+        const headers = [...baseHeaders, ...allQuestionHeaders];
 
         const csvContent = [
-            headers.join(','),
+            headers.map(h => escapeCSV(h)).join(','),
             ...filteredResponses.map(r => {
-                const trainerEvalStr = (r.trainerEvaluations || []).map(t =>
-                    `Type: ${t.trainerType || 'N/A'} - Trainer: ${t.trainerName} [${Object.entries(t.ratings || {}).map(([k, v]) => `${k}:${v}`).join('|')}]`
-                ).join('; ');
+                // Format trainer evaluations for a single cell
+                const trainerEvalStr = (r.trainerEvaluations || []).map(t => {
+                    const ratings = Object.entries(t.ratings || {})
+                        .map(([k, v]) => `${k}: ${v}`)
+                        .join(' | ');
+                    return `[${t.trainerType || 'Eval'}] ${t.trainerName}: ${ratings}`;
+                }).join('\n');
 
                 const row = [
-                    new Date(r.createdAt).toLocaleDateString(),
-                    `"${r.participantDetails?.email || ''}"`,
-                    `"${r.participantDetails?.trainerName || ''}"`,
-                    `"${r.participantDetails?.courseName || ''}"`,
-                    `"${trainerEvalStr}"`
+                    escapeCSV(new Date(r.createdAt).toLocaleDateString()),
+                    escapeCSV(r.participantDetails?.name || 'N/A'),
+                    escapeCSV(r.participantDetails?.trainerName || 'N/A'),
+                    escapeCSV(r.participantDetails?.courseName || 'N/A'),
+                    escapeCSV(r.participantDetails?.batch || 'N/A'),
+                    escapeCSV(trainerEvalStr)
                 ];
 
-                questionHeaders.forEach(qText => {
-                    const ans = r.dynamicAnswers?.find(a => a.questionText === qText);
+                // Map answers to the correct columns
+                allQuestionHeaders.forEach(headerText => {
+                    const ans = r.dynamicAnswers?.find(a => a.questionText === headerText);
                     if (!ans) {
-                        row.push('""');
-                    } else if (typeof ans.value === 'object' && ans.value !== null && !Array.isArray(ans.value)) {
-                        const matrixStr = Object.entries(ans.value).map(([key, val]) => `${key}: ${val}`).join(' | ');
-                        row.push(`"${matrixStr}"`);
-                    } else if (Array.isArray(ans.value)) {
-                        row.push(`"${ans.value.join(', ')}"`);
+                        row.push(escapeCSV(''));
                     } else {
-                        row.push(`"${ans.value || ''}"`);
+                        let val = ans.value;
+                        if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+                            // Matrix/Object value
+                            val = Object.entries(val).map(([k, v]) => `${k}: ${v}`).join('; ');
+                        } else if (Array.isArray(val)) {
+                            val = val.join(', ');
+                        }
+                        row.push(escapeCSV(val));
                     }
                 });
                 return row.join(',');
@@ -159,7 +201,7 @@ const Responses = () => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.setAttribute('href', url);
-        link.setAttribute('download', `feedback_responses_${new Date().toISOString().split('T')[0]}.csv`);
+        link.setAttribute('download', `UT_Feedback_Report_${new Date().toISOString().split('T')[0]}.csv`);
         link.click();
     };
 
@@ -244,7 +286,7 @@ const Responses = () => {
                             <MdSearch size={22} />
                             <input
                                 type="text"
-                                placeholder="Search by email..."
+                                placeholder="Search by trainer name..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -265,7 +307,7 @@ const Responses = () => {
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    <th>Participant (Email)</th>
+                                    <th>Participant Name</th>
                                     <th>Trainer</th>
                                     <th>Course</th>
                                     <th>Rating</th>
@@ -290,7 +332,7 @@ const Responses = () => {
                                         return (
                                             <tr key={res._id}>
                                                 <td className="date-cell">{new Date(res.createdAt).toLocaleDateString()}</td>
-                                                <td className="email-cell">{res.participantDetails?.email}</td>
+                                                <td className="email-cell">{res.participantDetails?.name || 'N/A'}</td>
                                                 <td>
                                                     <div className="trainer-cell-info">
                                                         {res.trainerEvaluations && res.trainerEvaluations.length > 0 ? (
@@ -334,43 +376,38 @@ const Responses = () => {
                     <div className="modal-overlay">
                         <div className="modal-content admin-modal">
                             <div className="modal-header">
-                                <h2>Response Details</h2>
+                                <h2>Response: {selectedResponse.participantDetails?.name || 'Anonymous Response'}</h2>
                                 <button onClick={() => setSelectedResponse(null)} className="close-btn">&times;</button>
                             </div>
                             <div className="modal-body-alt">
                                 <section className="response-section">
                                     <h3>Participant Info</h3>
                                     <div className="info-grid">
-                                        <p><strong>Email:</strong> {selectedResponse.participantDetails?.email || 'N/A'}</p>
-                                        <p><strong>Course:</strong> {selectedResponse.participantDetails?.courseName || 'N/A'}</p>
-                                        <p><strong>Trainer:</strong> {selectedResponse.participantDetails?.trainerName || 'N/A'}</p>
-                                        <p><strong>Batch:</strong> {selectedResponse.participantDetails?.batch || 'N/A'}</p>
+                                        <div className="info-item"><span>Participant Name</span><span>{selectedResponse.participantDetails?.name || 'N/A'}</span></div>
+                                        <div className="info-item"><span>Course</span><span>{selectedResponse.participantDetails?.courseName || 'N/A'}</span></div>
+                                        <div className="info-item"><span>Batch</span><span>{selectedResponse.participantDetails?.batch || 'N/A'}</span></div>
                                     </div>
                                 </section>
 
                                 <section className="response-section">
-                                    <h3>Form Content</h3>
+                                    <h3>Performance Report</h3>
                                     <div className="sections-display">
                                         {selectedResponse.trainerEvaluations && selectedResponse.trainerEvaluations.length > 0 && (
                                             <div className="response-group-block">
-                                                <h4 className="response-section-title">{getSectionTitle('Trainer Evaluation')}</h4>
+                                                <h4 className="response-section-title">Trainer Feedback</h4>
                                                 <div className="answers-list">
                                                     {selectedResponse.trainerEvaluations.map((evalItem, idx) => (
                                                         <div key={idx} className="trainer-response-block">
-                                                            <div className="answer-item" style={{ gridTemplateColumns: '1fr', gap: '0.5rem' }}>
-                                                                <span className="trainer-label-display">
-                                                                    Trainer: {evalItem.trainerName}
-                                                                    <span className="trainer-type-suffix">
-                                                                        ({evalItem.trainerType || 'Course Training'})
-                                                                    </span>
-                                                                </span>
-                                                                <div className="matrix-display">
-                                                                    {evalItem.ratings && Object.entries(evalItem.ratings).map(([criteria, rating]) => (
-                                                                        <div key={criteria} className="matrix-row-val">
-                                                                            <strong>{criteria}:</strong> {rating}
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
+                                                            <div className="trainer-label-display">
+                                                                {evalItem.trainerName}
+                                                                <span className="trainer-type-suffix">{evalItem.trainerType}</span>
+                                                            </div>
+                                                            <div className="matrix-display">
+                                                                {evalItem.ratings && Object.entries(evalItem.ratings).map(([criteria, rating]) => (
+                                                                    <div key={criteria} className="matrix-row-val">
+                                                                        <strong>{criteria}:</strong> {rating}
+                                                                    </div>
+                                                                ))}
                                                             </div>
                                                         </div>
                                                     ))}
@@ -380,8 +417,15 @@ const Responses = () => {
 
                                         {(() => {
                                             const grouped = (selectedResponse.dynamicAnswers || []).reduce((acc, ans) => {
-                                                // Map to current question meta if available
                                                 const currentQ = questions.find(q => q._id === ans.questionId);
+
+                                                // FILTER REPEATS: If the question text matches something already in Participant Info, skip it
+                                                const txt = (currentQ?.questionText || ans.questionText || '').toLowerCase();
+                                                const keywordsToFilter = ['name', 'email', 'course', 'batch', 'participant'];
+                                                if (keywordsToFilter.some(k => txt.includes(k)) && txt.length < 30) {
+                                                    return acc;
+                                                }
+
                                                 const section = currentQ ? currentQ.section : (ans.section || 'Other');
                                                 const text = currentQ ? currentQ.questionText : (ans.questionText || 'Deleted Question');
 
@@ -391,13 +435,19 @@ const Responses = () => {
                                             }, {});
 
                                             return Object.keys(grouped).sort((a, b) => {
+                                                const minOrderA = Math.min(...grouped[a].map(ans => {
+                                                    const q = questions.find(qu => qu._id === ans.questionId);
+                                                    return q?.order || 0;
+                                                }));
+                                                const minOrderB = Math.min(...grouped[b].map(ans => {
+                                                    const q = questions.find(qu => qu._id === ans.questionId);
+                                                    return q?.order || 0;
+                                                }));
+                                                if (minOrderA !== minOrderB) return minOrderA - minOrderB;
                                                 const cleanA = a.toLowerCase();
                                                 const cleanB = b.toLowerCase();
                                                 if (cleanA.includes('final')) return 1;
                                                 if (cleanB.includes('final')) return -1;
-                                                const numA = parseInt(a.match(/\d+/)?.[0] || 999);
-                                                const numB = parseInt(b.match(/\d+/)?.[0] || 999);
-                                                if (numA !== numB) return numA - numB;
                                                 return cleanA.localeCompare(cleanB);
                                             }).map(section => (
                                                 <div key={section} className="response-group-block">
@@ -405,7 +455,7 @@ const Responses = () => {
                                                     <div className="answers-list">
                                                         {grouped[section].map((ans, idx) => (
                                                             <div key={idx} className="answer-item">
-                                                                <label>{ans.questionText || 'Deleted Question'}</label>
+                                                                <label>{ans.questionText}</label>
                                                                 <div className="answer-content">
                                                                     {renderAnswer(ans)}
                                                                 </div>
