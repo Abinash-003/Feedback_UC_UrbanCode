@@ -380,33 +380,153 @@ tr:last-child td {
 }
 
 @media print {
+    @page {
+        margin: 0.5cm !important;
+    }
 
+    /* Hide ALL background UI and the trainer table */
     .sidebar,
+    .sidebar-toggle,
+    .sidebar-overlay,
     .page-header,
-    .table-controls,
     .stats-grid,
-    .action-group,
+    .table-controls,
+    .table-wrapper,
+    .responses-manager-container,
     .modal-header,
-    .modal-footer {
+    .modal-footer-alt,
+    [class*="sidebar-toggle"] {
         display: none !important;
     }
 
-    .modal-overlay {
-        position: absolute;
-        padding: 0;
-        background: white;
+    body,
+    html {
+        background: white !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    .modal-content {
-        box-shadow: none;
-        max-width: none;
-        max-height: none;
-        display: block;
+    .admin-layout,
+    .admin-content {
+        display: block !important;
+        float: none !important;
+        position: static !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .modal-overlay {
+        position: static !important;
+        display: block !important;
+        background: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        height: auto !important;
+        width: 100% !important;
+        z-index: auto !important;
+    }
+
+    .modal-content.admin-modal {
+        position: static !important;
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        height: auto !important;
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    .modal-body-alt {
+        display: block !important;
+        overflow: visible !important;
+        height: auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Prevent titles from being separated from their content */
+    h2,
+    h3,
+    h4 {
+        break-after: avoid !important;
+        page-break-after: avoid !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.25rem !important;
+        padding: 0 !important;
+    }
+
+    .response-section,
+    .sections-display {
+        display: block !important;
+        break-inside: auto !important;
+    }
+
+    .response-section {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .response-group-block {
+        break-inside: auto !important;
+        /* Allow the block to break across pages */
+        page-break-inside: auto !important;
+        margin-bottom: 0.5rem !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #eee !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .response-section-title {
+        margin-bottom: 0.5rem !important;
+        padding-bottom: 0.25rem !important;
+    }
+
+    .answer-item {
+        break-inside: avoid !important;
+        /* Keep individual Q&A pairs together */
+        page-break-inside: avoid !important;
+        margin-bottom: 0.25rem !important;
+        gap: 0 !important;
+    }
+
+    .answer-item label {
+        margin-bottom: 0 !important;
+    }
+
+    .answers-list {
+        display: block !important;
+        gap: 0 !important;
     }
 
     .answer-content {
         background: transparent !important;
-        padding: 0 !important;
+        border: none !important;
+        padding: 0.25rem 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .matrix-display {
+        gap: 0.25rem !important;
+        margin-top: 0 !important;
+    }
+
+    .matrix-row-val {
+        padding: 0.25rem 0.5rem !important;
     }
 }
 
