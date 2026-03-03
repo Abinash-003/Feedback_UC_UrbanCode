@@ -10,6 +10,8 @@ const AdminLogin = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
+
     useEffect(() => {
         document.title = "UC-feedback form login";
     }, []);
@@ -27,6 +29,7 @@ const AdminLogin = () => {
             localStorage.setItem('token', res.data.token);
             navigate('/admin/dashboard');
         } catch (err) {
+            console.error("Login Error:", err);
             setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
         } finally {
             setLoading(false);
