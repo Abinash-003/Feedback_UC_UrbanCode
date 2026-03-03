@@ -306,11 +306,9 @@
     transform: scale(1.05);
 }
 
-/* Action Buttons */
 .action-group {
     display: flex;
     gap: 0.75rem;
-    justify-content: flex-end;
 }
 
 .btn-icon {

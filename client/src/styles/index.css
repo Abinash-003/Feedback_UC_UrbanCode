@@ -219,6 +219,32 @@ ul {
    Standardized UI System (Globals)
    ========================================================================== */
 
+/* 0. Alignment Utilities */
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+/* Ensure flex containers inside aligned cells follow the alignment */
+.text-right>.action-group {
+  justify-content: flex-end;
+}
+
+.text-center>.action-group {
+  justify-content: center;
+}
+
+.text-left>.action-group {
+  justify-content: flex-start;
+}
+
 /* 1. Modal System */
 .modal-overlay {
   position: fixed;
